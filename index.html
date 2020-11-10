@@ -31,6 +31,12 @@
 				background-color: blue;
 				cursor: pointer;
 			}
+			p.title{
+				font-size:23px;
+				font-family:serif;
+				color:blue;
+				text-shadow: 5px 2px 6px red;
+			}
 			#game{
 				display:none;
 				border: 25px groove orange;
@@ -74,6 +80,19 @@
 				font-family:comic sans ms;
 				font-size: 20px;
 			}
+			#tie{
+				position: fixed;
+				display:none;
+				left: 345px;
+				top: 42px;
+				width:32%;
+				height:327px;
+				background-color:rgb(255,255,0,0.8);
+				padding-top: 120px;
+				color:lightblue;
+				font-family:comic sans ms;
+				font-size: 80px;
+			}
 			img{
 				height: 150px;
 				width: 150px;
@@ -105,6 +124,7 @@
 			function check(thunk){
 				var tatas = false;
 				var a;
+				var chonkers = false;
 				for(a=0; a < 3; a++){
 					if (table[a][0] == table[a][1] && table[a][0] == table[a][2] && table[a][0] == thunk){
 						tatas = true;
@@ -121,6 +141,16 @@
 				if (table[0][2] == table[1][1] && table[0][2] == table[2][0] && table[1][1] == thunk){
 					tatas = true;
 				}
+				for(var g = 0; g<3; g++){
+					for(var h = 0; h<3; h++){
+						if(table[g][h]==0){
+							chonkers = true;
+						}
+					}
+				}
+				if(chonkers == false && tatas == false){
+					return 2;
+				}
 				return tatas;
 			}
 			
@@ -131,15 +161,19 @@
 						var john = pos.split("");
 						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
 						var clock = Math.floor(Math.random()*1500)+500;
-						if (check(current)){
+						if (check(current)==true){
 							document.getElementById("win").style.display="block";
 							current = 0;
 						}
-						else{
+						else if(check(current)==false){
 							current *= -1;
 							setTimeout(function(){
 								mov(0,1);
 							}, clock);
+						}
+						else{
+							document.getElementById("tie").style.display="block";
+							current = 0;
 						}
 						//alert("next");
 					}
@@ -147,20 +181,34 @@
 						sop = (10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1);
 						sop = sop.toString();
 						var john = sop.split("");
-						while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
-							sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
-							sop = sop.toString();
-							var john = sop.split("");
+						var overwrite = Math.floor(Math.random()*5);
+						if(overwrite!=1){
+							while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
+								sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+								sop = sop.toString();
+								var john = sop.split("");
+							}
+						}
+						else{
+							while (table[parseInt(john[0])-1][parseInt(john[1])-1] == current){
+								sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+								sop = sop.toString();
+								var john = sop.split("");
+							}
 						}
 						document.getElementById(sop+"AA").src=images[current+1];
 						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
 						
-						if (check(current)){
+						if (check(current)==true){
 							document.getElementById("lose").style.display="block";
 							current = 0;
 						}
-						else{
+						else if(check(current)==false){
 							current *= -1;
+						}
+						else{
+							document.getElementById("tie").style.display="block";
+							current = 0;
 						}
 					}
 				}
@@ -169,20 +217,34 @@
 						sop = (10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1);
 						sop = sop.toString();
 						var john = sop.split("");
-						while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
-							sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
-							sop = sop.toString();
-							var john = sop.split("");
+						var overwrite = Math.floor(Math.random()*5);
+						if(overwrite!=1){
+							while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
+								sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+								sop = sop.toString();
+								var john = sop.split("");
+							}
+						}
+						else{
+							while (table[parseInt(john[0])-1][parseInt(john[1])-1] == current){
+								sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+								sop = sop.toString();
+								var john = sop.split("");
+							}
 						}
 						document.getElementById(sop+"AA").src=images[current+1];
 						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
 						
-						if (check(current)){
+						if (check(current)==true){
 							document.getElementById("lose").style.display="block";
 							current = 0;
 						}
-						else{
+						else if(check(current)==false){
 							current *= -1;
+						}
+						else{
+							document.getElementById("tie").style.display="block";
+							current = 0;
 						}
 					}
 					else if(current==plyr){
@@ -190,15 +252,19 @@
 						var john = pos.split("");
 						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
 						var clock = Math.floor(Math.random()*1500)+500;
-						if (check(current)){
+						if (check(current)==true){
 							document.getElementById("win").style.display="block";
 							current = 0;
 						}
-						else{
+						else if(check(current)==false){
 							current *= -1;
 							setTimeout(function(){
 								mov(0,1);
 							}, clock);
+						}
+						else{
+							document.getElementById("tie").style.display="block";
+							current = 0;
 						}
 						//alert("next");
 					}
@@ -210,8 +276,7 @@
 	<body>
 		<center>
 			<div id="menu">
-				<br>
-				<br>
+				<p class="title">AZTECTACTOE</p>
 				<input type="radio" name="thi" checked="checked" onclick="clck(1)">X
 				<input type="radio" name="thi" onclick="clck(-1)">O
 				<br>
@@ -248,6 +313,7 @@
 				</table>
 				<div id="win">YOU WIN</div>
 				<div id="lose">lose.</div>
+				<div id="tie">Tie?????</div>
 				<!---<button id="buttHAHAHA" onclick="s--->
 			</div>
 		</center>
