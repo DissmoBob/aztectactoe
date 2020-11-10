@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			#menu{
+				display: block;
+				border: 2px solid blue;
+				width: 50%;
+				height: 250px;
+				background-color: pink;
+				color: red;
+			}
+			#menu:hover{font-size:25px; font-family: arial;}
+			button{ 
+				border: 3px solid black; 
+				background-color: lightblue;
+				font-family: comic sans ms;
+				font-size: 43px;
+				padding-left: 24px;
+				text-shadow: 2px 2px 5px blue;
+				box-shadow: 2px 2px;
+				left: 25px;
+			}
+			button:hover{
+				box-shadow: 5px 5px 2px orange;
+				font-size: 37px;
+				font-family: times new roman;
+				padding-right: 45px;
+				color: green;
+				border: 3px solid red;
+				background-color: blue;
+				cursor: pointer;
+			}
+			#game{
+				display:none;
+				border: 25px groove orange;
+				border-radius: 50px;
+				width: 79.2%;
+				height: 750px;
+				background-color: pink;
+				color: red;
+			}
+			td{
+				width: 150px;
+				height:150px;
+				border: 3px solid black;
+				background-color: white;
+				text-align: center;
+			}
+			td:hover{
+				border: 3px double blue;
+			}
+			#win{
+				position: fixed;
+				display:none;
+				top: 15px;
+				width:45%;
+				height:324px;
+				color: blue;
+				background-color:rgb(100,255,100,0.8);
+				font-family:comic sans ms;
+				font-size: 100px;
+			}
+			#lose{
+				position: fixed;
+				display:none;
+				left: 379px;
+				top: 35px;
+				width:45%;
+				height:327px;
+				background-color:rgb(255,0,0,0.8);
+				padding-top: 150px;
+				color:black;
+				font-family:comic sans ms;
+				font-size: 20px;
+			}
+			img{
+				height: 150px;
+				width: 150px;
+			}
+			<!--body{ background-color: lightblue;}-->
+		</style>
+		<script>
+			var table;
+			var plyr = 1;
+			var opp = -1;
+			var current;
+			var images = ['https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTGK3tr63gpEwkm5Uc-3hoE8wed3Ckb52kKYg&usqp=CAU',0,'https://upload.wikimedia.org/wikipedia/en/5/55/Aaztex09.png'];
+			
+			function startGame(){
+				current = 1;
+				table = [[0,0,0],[0,0,0],[0,0,0]]
+				document.getElementById("game").style.display="block";
+				document.getElementById("menu").style.display="none";
+				if(opp==1){
+					mov(0,1);
+				}
+			}
+			
+			function clck(val){
+				plyr = val;
+				opp = val*-1;
+			}
+			
+			function check(thunk){
+				var tatas = false;
+				var a;
+				for(a=0; a < 3; a++){
+					if (table[a][0] == table[a][1] && table[a][0] == table[a][2] && table[a][0] == thunk){
+						tatas = true;
+					}
+				}
+				for(a=0; a<3; a++){
+					if (table[0][a] == table[1][a] && table[0][a] == table[2][a] && table[0][a] == thunk){
+						tatas = true;
+					}
+				}
+				if (table[0][0] == table[1][1] && table[0][0] == table[2][2] && table[0][0] == thunk){
+					tatas = true;
+				}
+				if (table[0][2] == table[1][1] && table[0][2] == table[2][0] && table[1][1] == thunk){
+					tatas = true;
+				}
+				return tatas;
+			}
+			
+			function mov(pos,who){
+				if(plyr == 1){
+					if(current==plyr && who == 0){
+						document.getElementById(pos+"AA").src=images[current+1];
+						var john = pos.split("");
+						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
+						var clock = Math.floor(Math.random()*1500)+500;
+						if (check(current)){
+							document.getElementById("win").style.display="block";
+							current = 0;
+						}
+						else{
+							current *= -1;
+							setTimeout(function(){
+								mov(0,1);
+							}, clock);
+						}
+						//alert("next");
+					}
+					else if(who == 1){
+						sop = (10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1);
+						sop = sop.toString();
+						var john = sop.split("");
+						while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
+							sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+							sop = sop.toString();
+							var john = sop.split("");
+						}
+						document.getElementById(sop+"AA").src=images[current+1];
+						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
+						
+						if (check(current)){
+							document.getElementById("lose").style.display="block";
+							current = 0;
+						}
+						else{
+							current *= -1;
+						}
+					}
+				}
+				else{
+					if(current==opp && who == 1){
+						sop = (10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1);
+						sop = sop.toString();
+						var john = sop.split("");
+						while (table[parseInt(john[0])-1][parseInt(john[1])-1] != 0){
+							sop = 10*(Math.floor(Math.random()*3)+1)+Math.floor(Math.random()*3)+1;
+							sop = sop.toString();
+							var john = sop.split("");
+						}
+						document.getElementById(sop+"AA").src=images[current+1];
+						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
+						
+						if (check(current)){
+							document.getElementById("lose").style.display="block";
+							current = 0;
+						}
+						else{
+							current *= -1;
+						}
+					}
+					else if(current==plyr){
+						document.getElementById(pos+"AA").src=images[current+1];
+						var john = pos.split("");
+						table[parseInt(john[0])-1][parseInt(john[1])-1] = current;
+						var clock = Math.floor(Math.random()*1500)+500;
+						if (check(current)){
+							document.getElementById("win").style.display="block";
+							current = 0;
+						}
+						else{
+							current *= -1;
+							setTimeout(function(){
+								mov(0,1);
+							}, clock);
+						}
+						//alert("next");
+					}
+				}
+			}
+		</script>
+		
+	</head>
+	<body>
+		<center>
+			<div id="menu">
+				<br>
+				<br>
+				<input type="radio" name="thi" checked="checked" onclick="clck(1)">X
+				<input type="radio" name="thi" onclick="clck(-1)">O
+				<br>
+				<p id="test" style="color:#1A2B3C">x starts have fun    </p><br><br>
+				<button onclick="startGame()">Start Game</button>
+			</div>
+			<div id="game">
+				<p>test</p>
+				<table>
+					<tr>
+						<td id="11" onclick="mov(this.id,0)"><img id="11AA">
+						</td>
+						<td id="12" onclick="mov(this.id,0)"><img id="12AA">
+						</td>
+						<td id="13" onclick="mov(this.id,0)"><img id="13AA">
+						</td>
+					</tr>
+					<tr>
+						<td id="21" onclick="mov(this.id,0)"><img id="21AA">
+						</td>
+						<td id="22" onclick="mov(this.id,0)"><img id="22AA">
+						</td>
+						<td id="23" onclick="mov(this.id,0)"><img id="23AA">
+						</td>
+					</tr>
+					<tr>
+						<td id="31" onclick="mov(this.id,0)"><img id="31AA">
+						</td>
+						<td id="32" onclick="mov(this.id,0)"><img id="32AA">
+						</td>
+						<td id="33" onclick="mov(this.id,0)"><img id="33AA">
+						</td>
+					</tr>
+				</table>
+				<div id="win">YOU WIN</div>
+				<div id="lose">lose.</div>
+				<!---<button id="buttHAHAHA" onclick="s--->
+			</div>
+		</center>
+	</body>
+</html>
